@@ -1,4 +1,4 @@
-ervices:
+services:
 - docker
 script:
 - export SAVE=$PWD cnt="ubuimgctr" slim=".slim"
