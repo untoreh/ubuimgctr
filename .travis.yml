@@ -5,12 +5,12 @@ script:
 - docker pull willnorris/imageproxy
 - docker tag willnorris/imageproxy ${cnt}
 - > 
-sudo ./docker-slim build  
---include-path /etc/ssl/certs
---continue-after 10 
---http-probe  
---tag ${cnt}.slim 
-${cnt}
+  sudo ./docker-slim build
+  --include-path /etc/ssl/certs
+  --continue-after 10
+  --http-probe
+  --tag ${cnt}.slim
+  ${cnt}
 
 before_deploy:
 - cd
