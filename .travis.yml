@@ -3,18 +3,16 @@ services:
 script:
 - export SAVE=$PWD cnt="ubuimgctr" slim=".slim"
 - docker pull willnorris/imageproxy
-- docker tag willnorris/imageproxy ${cnt} 
-- >
-  sudo ./docker-slim build 
-  --continue-after 10
-  --http-probe 
-  --tag ${cnt}.slim
-  ${cnt}
-  
+- docker tag willnorris/imageproxy ${cnt}
+- 'sudo ./docker-slim build  --continue-after 10 --http-probe  --tag ${cnt}.slim ${cnt}
+
+'
 before_deploy:
 - cd
-- wget `curl -s https://api.github.com/repos/appc/docker2aci/releases | grep browser_download_url | head -n 1 | cut -d '"' -f 4` -O d2a.tar.gz
-- tar -zxf d2a.tar.gz && rm d2a.tar.gz && d2a=`ls | grep "docker2aci*"` && d2a=`basename  $d2a` && alias d2a='${PWD}/${d2a}/docker2aci'
+- wget `curl -s https://api.github.com/repos/appc/docker2aci/releases | grep browser_download_url
+  | head -n 1 | cut -d '"' -f 4` -O d2a.tar.gz
+- tar -zxf d2a.tar.gz && rm d2a.tar.gz && d2a=`ls | grep "docker2aci*"` && d2a=`basename  $d2a`
+  && alias d2a='${PWD}/${d2a}/docker2aci'
 - docker save -o ${cnt}.slim.tar ${cnt}.slim
 - "${PWD}/${d2a}/docker2aci ${cnt}.slim.tar"
 - xz -9 -c ${cnt}.slim.tar > ${cnt}.slim.tar.xz
@@ -35,4 +33,7 @@ env:
   global:
   - secure: kxaDUmCzKRjZzE6hmW3FdNNgIfFjlFVJpmFroxXKFE60FVB/C/azSZqBXom18PH/97Gu9M6aFX0YbXOGD2s8MRWD1u7gpszVZfKeeELLN8wVQz68nxlKLaLa8bvtBjX1vZaCkckxn9S+3AFD5a6jucMM0roCmA3dUUbvJYalbCjKTCyvOi8KOob2JSWn9BJ9J38ikCUg/VKsmRExr05TceVyilnv/T03fuV2bd8VOOkRRNdW1/ebyCPBjRZZPnePhewamc48w6Y4a60bI+c0vtVTAPkhAUYBKTlkz6+CtyEoKfBfaslj6m7xrWpiqKY35H9SkJvAkRoqggXZJnJCKbrInYX91PH4xJpTUfUVmXrf7uZ1mCRLgN65kKt9ru5mSmBoE3HWhRNbAJjYjOqDAbMGssjSNB5QssGK6QMx9I121iAUsuqoznsCAd1HdDoYBudFvJ/mP5hpnIp+c/wS1nXaTSSfM2bgwcot2Dh7txZEZfhT6RDieJcMzT/2gsU87VfmOECKuUe5DLyePLCHjAqpMZhFBk0pXOH/fa073CJPryvfCvdtWR7zyr83+pmd/v8TDtg8cLUrSTP05ztTMnVsZp33GmzXxsCyIqnOfZ0jLRjysVt3uN/kPzTNdwtlZCswZ/ULI4nTDXuv+8/TyBZiDCOP7ZGfwBwMFAUHLnk=
   - secure: gzKh8TqwgOTUAzbFF/iVV3L2lfAQtTlbU1j0Sw0RseEuBp1pp0j6l1fZw0xMJwe+hF/QYGpDVPfb0ipH1IRhRODqKFITEUD9YJB2R9bzvcjeHcnURSW0cYOTgZdg06cXbZOO9vScXSovJbxowCAWeCv762uJo36cR3uEvxYcFPm1pYcxz4qz46eV2wcVBuR8CFI5W3eyzELSyTdXaRVCdNkmIdugxWJcHuedp2mLgb7paxyxvOl2kkaBgRDU5MDVj6ote6AvOm5cOX640nCDgaoNu3QCcN08QVUPyagEuOZn9lHxJ9N3nA/mc6M0QtjkDwX84YZd1RUHfdm6GCCLojPp4eQu6uIO+xHaqVIyOTf6XYO5G73BWnXAFckIfP7fuLoat2xJWTd+sA0Z9f3hylMB56NdL+bwlmyzRonUYPt+pSUwhfeDU+ojTQ7lA6Y7PpMevokDonDbpvWJvFziDIqSZEC/3jfZZGE8s2wUThpho6s7bVdKVbR2CjoMBRFKsIfBwbROJjys10tcY+dMC6qMyu0dL2/X5kx7K6L9BjLfl+STeYX++wugwj5s6gBfAkwOSyt4dNhA8J4H8GliY92sgKYXWSoEzcH5ArxXDatfwB9AvCYjgtG+0Z+lgUV2vbdENMvYl8r477S1YMMMsF3xwVDjcOcZ2ZLbttToa1M=
-  - secure: ugkzQtA+IAcARQpoYv1XqPM67FGRA1qv0qIX67EumffYa2mE9wG41lFu7Z0pZY1SEc+RjiedrQAqzaRCj3CXfHeUzmO/SF+rB8OsWrFa5382VacBbHOWeliRfJhXMTOtEldIBb3uvf+sJz9tE5yOBbKNQo43x9elTOOFNQDInmZM+buwRMjhwQFneaLW9kKrEVGAJsXAQEasohblaEMV7ZX229RfPfc+Kz+wNXlWXcvnlV2/2nBRJHFLsjsez3pmhlhA4nWCC5s5aKtUqAb/7PagRAFImLsBgK4KKCQIhbFzwGDzqngSQyrlU3mmaqSiijUVEO7+UvEEkTeiaMeg5jdfpXO+nZyd1cEZ926QgqAqmhxE08ik8ckI82V8V8CGNOOKWrPbGB0oIqpOsYYr3sVL7bwJ+XBLNbePyYraAXyvpLA7PYMhBkJNHQzuUgy7JLL/+CH7St9TXlMK37c2tAHQNwdxcAm18jhekG68JHirNgqXVlVScb8Pt+2pi9R6THcrYrbU9ODxXNzRczm9Fg50pGxekonuNgXg5bPP5I2WhHlfE5z6eCCHNGgHkMDYDR59k+jNPXnTMi6rSLM7EKw+sF3hHww3MNQ0zMDGADTn3k00Qay25GqmUoGRjyvYeNQ8Zk1ZdspdrFNY1335HnfFl4rsIlQMWAFPtUR4X94=    
+  - secure: ugkzQtA+IAcARQpoYv1XqPM67FGRA1qv0qIX67EumffYa2mE9wG41lFu7Z0pZY1SEc+RjiedrQAqzaRCj3CXfHeUzmO/SF+rB8OsWrFa5382VacBbHOWeliRfJhXMTOtEldIBb3uvf+sJz9tE5yOBbKNQo43x9elTOOFNQDInmZM+buwRMjhwQFneaLW9kKrEVGAJsXAQEasohblaEMV7ZX229RfPfc+Kz+wNXlWXcvnlV2/2nBRJHFLsjsez3pmhlhA4nWCC5s5aKtUqAb/7PagRAFImLsBgK4KKCQIhbFzwGDzqngSQyrlU3mmaqSiijUVEO7+UvEEkTeiaMeg5jdfpXO+nZyd1cEZ926QgqAqmhxE08ik8ckI82V8V8CGNOOKWrPbGB0oIqpOsYYr3sVL7bwJ+XBLNbePyYraAXyvpLA7PYMhBkJNHQzuUgy7JLL/+CH7St9TXlMK37c2tAHQNwdxcAm18jhekG68JHirNgqXVlVScb8Pt+2pi9R6THcrYrbU9ODxXNzRczm9Fg50pGxekonuNgXg5bPP5I2WhHlfE5z6eCCHNGgHkMDYDR59k+jNPXnTMi6rSLM7EKw+sF3hHww3MNQ0zMDGADTn3k00Qay25GqmUoGRjyvYeNQ8Zk1ZdspdrFNY1335HnfFl4rsIlQMWAFPtUR4X94=
+  - secure: kDJqRON7OIEqLfo1k2xbZHejuTZ8J/d/nkr6M6hYjLAyE7lYWywZFr2Ue2NE8pgOLiaKzgyHrDEerqdm9MA3nD4O/ZvAdjm286PSYEM5RUgaDtiKe3nqkrgK458q47ud+RFp0tg+DAhjOQ8n2Oo8JoQ6733woIAvFGlk9U60blaFMQRSkgmdO8IjTiLk5hSt+KH945y0BKhU4UaySuTpcdbR38FA/I55upUvzn3UwxbZZVOukzt5yxnYHJWgFWQ26SrEN2ZTP1WUDtBE8jw7z+YV1W1T8tL00X2mnSW2mwKlyhhYBvRbpE6+Z2YA3tgpq/vayoQCrvLGCv/EWCU06uCtvkAyGGtCqBr/MnZlwiK6wywvehB/r4O5fJpV+/FNP8LDAaByfm7PMkf9azFX0A411B1pZposk49nSfVBrzcd1fKQ6ue78qT/3rF2gt8B3qT+0KuXr6hYoDAoBLo+jA3SZROnbx4j1Oll7HyHDngEueSclUmSSEojSxHx3WaKxsL+wn/QZK5jcNAzjHGTO21sO6xXcPvFIhH0Z6xnr6nIcjvz4ATziufZ9m5OaXOvbvK2aNtwQsX/CBrgOi2EsttiPFBQZpBnKdkqQ3iaD8C2VIYP+uIGobHOY9wvqS1dlBmWB2DIbZx8Kie/g7hqR6o2mzil2isZHYGOKzXV8qo=
+  - secure: qxUEMjbLgGl28KA7YWuj5WCdTLDS2Dq6imrApiZZgI9yfDG768hJsFesl4sr9jiBLGuBUID4IDAsMItyDt7WptIAX8cwbZK+G5tY/Ji6bFhUhysvZwMTjKaMMSPbKen6xSWnJaTExUKI+i5vRZU8LVaqm8bV9ztetLShDdxVX2VNebjHpWP4tyi7Y4Ywmzu43DnoBfRBB09zpThOPPMK6RZzL4oLin9r0g/B6RInlM31ZwzmwQmjH5YxOCk+AZ1US68eg0sL2uPM9mkhlf/il8EwiUeVJFpUVz5Bvgl+WNqwu+uPB/DGfnNSSqFu/lmtguvQluwDkwoOqFz1tnHDMVyWisu+2x6w7jfxD1s64ZISLFev9kAGyrvJZNBZtbiR8LN0kogO5JrffeA2dSSxfn71HPLMhd4S1uaWYa+2wOY2bOyTU8QKrylE1pYMImRl9zkkNpfRgaBg48859EobUhwgnkJJY5N7E5gvMG03VTgNzNeOkR+A0PLKkHMv/1nJwNhZkfXPOCvFrwMaby6y28mB9O6vyuCU9jTJWVatnoHHSTfpq4ChnQtepNm6hs/B0pJtgOVEeO8Vy31zJ2mr/JBxNuRPPRcj9LA+cChG3bRYxIxCbyggktwTFtSFPZZI7+QZZkqLbxluZT97gVYbLE8Wpn/L6cj7rbqDLoefQJc=
+  - secure: tFSlDrqs9Fnz8NQK953eM0EnORMsg0XWW6N7zBaskl9FZeQ7+Akwwq0CcIQrtxkJ6Rd6xi/+cdWAWmY2zHZKdLDwErpjTjngMJEUNhAeboFeKJTpjdhOPe6KOcu3zuCZOq7OO4slATFN+PdsQAgIA8eNy/LMHxQ/a7zJn1pEgNv4GO2fzRHJuv89Jw7/z8qLPV3eKKON5y5sRRs4kkjD/fnl3eFXW332pNUOTteQPKdoNsi2icriVV90V5avPbqet2dzpJ8BgI3BCALMUqSssGjBuYAhhJ52BxT2vIeIRc+4gvmFLhH/jvlj8UwtA0nWLxpZGoUIjJJT7NmDSXP3v+QGHnqP/tr1HIHd2fSPWnm/bPlErJr+nxTO6qtX7vUhxSigfJzmWSZJ+3q+rMTMskBE4EsukRvKlUek0eKgLr8HawQpqnLw+PSyCtNV3AOWqpB2bnc0gXEHkwUsoJ6aeWgeORxFDReRE3Gln489zudG7QzVTyysPhAxAgda7HyjWisRe/7VKW7nEsO2d6IeqqhBVaFdYcBBCLN8PkU5xcUD1qqUFvf9rQsnQM3SV/Df/hyYagtUDuXi77iQWCnVhxhRSASLCL/u/bP8Ju7vyKn+ezZ8sl9dXEkh3FB14O6ukCahOp26yWjn7x2LXXeee1gP/NHkY9ZdTCFm1lxr0so=
