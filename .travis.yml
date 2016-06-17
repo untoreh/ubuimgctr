@@ -4,9 +4,14 @@ script:
 - export SAVE=$PWD cnt="ubuimgctr" slim=".slim"
 - docker pull willnorris/imageproxy
 - docker tag willnorris/imageproxy ${cnt}
-- 'sudo ./docker-slim build  --continue-after 10 --http-probe  --tag ${cnt}.slim ${cnt}
+- > 
+sudo ./docker-slim build  
+--include-path /etc/ssl/certs
+--continue-after 10 
+--http-probe  
+--tag ${cnt}.slim 
+${cnt}
 
-'
 before_deploy:
 - cd
 - wget `curl -s https://api.github.com/repos/appc/docker2aci/releases | grep browser_download_url
