@@ -1,22 +1,11 @@
 ervices:
 - docker
 script:
-- export SAVE=$PWD cnt="ubusqlctr" slim=".slim"
+- export SAVE=$PWD cnt="willnorris/imageproxy" slim=".slim"
 - docker build -t ${cnt} .
 - >
   sudo ./docker-slim build 
-  --mount ${SAVE}/scripts:/scripts
-  --entrypoint /scripts/testsql.sh
-  --include-path /entry.sh
-  --include-path /bin/mkdir 
-  --include-path /bin/touch 
-  --include-path /bin/chmod 
-  --include-path /bin/ls
-  --include-path /bin/echo
-  --include-path /bin/sleep
-  --include-path /usr/lib/mysql
   --continue-after 10
-  --mount /var/lib/mysql:/var/lib/mysql 
   --http-probe 
   ${cnt} 
   
