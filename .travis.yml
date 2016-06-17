@@ -1,8 +1,9 @@
 ervices:
 - docker
 script:
-- export SAVE=$PWD cnt="willnorris/imageproxy" slim=".slim"
-- docker build -t ${cnt} .
+- export SAVE=$PWD cnt="ubuimgctr" slim=".slim"
+- docker pull willnorris/imageproxy
+- docker tag willnorris/imageproxy ${cnt} 
 - >
   sudo ./docker-slim build 
   --continue-after 10
