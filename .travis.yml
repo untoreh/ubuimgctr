@@ -8,7 +8,7 @@ script:
   sudo ./docker-slim build 
   --continue-after 10
   --http-probe 
-  --tag ${cnt}
+  --tag ${cnt}.slim
   ${cnt}
   
 before_deploy:
